@@ -1,23 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import PomodoroTimer from "./components/PomodoroTimer.jsx"
+
+const AppContent = () => {
+
+    return (
+        <div className="app-container">
+
+            <header id="pomodoro-header" className="ncsu">
+                <h1>Pomodoro Timer</h1>
+                <button className="settings">Settings</button>
+            </header>
+
+            <Routes> 
+                <Route path='/' element= {<PomodoroTimer duration={25 * 60 * 1000}/> }> </Route>
+            </Routes>
+        </div>
+    )
+    
+
+
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <BrowserRouter>
+        <AppContent />
+         </BrowserRouter>
+        
     </div>
   );
 }
