@@ -1,0 +1,26 @@
+{
+  "name": "pomodoro-timer",
+  "version": "1.0.0",
+  "description": "A simple productivity timer that follows the Pomodoro Technique — 25 minutes of focused work followed by a 5-minute break. The app lets users start, pause, and reset a countdown timer, and visually tracks the current session (work or break).",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RodrigoPiccilli/pomodoro-timer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RodrigoPiccilli/pomodoro-timer/issues"
+  },
+  "homepage": "https://github.com/RodrigoPiccilli/pomodoro-timer#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
