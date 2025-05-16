@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
 
+import doneSound from './audio/done.mp3';
+
+import pauseSound from './audio/pause.mp3';
+
+import forwardSound from './audio/forward.mp3';
+
+import fastForward from './images/fast-forward.png'
 
 const PomodoroTimer = ({duration}) => {
 
@@ -10,6 +17,8 @@ const PomodoroTimer = ({duration}) => {
     const [stage, setStage] = useState(1);
 
     const [cycleCount, setCycleCount] = useState(1);
+
+    const [skipped, setSkipped] = useState(false);
 
     useEffect(() => {
 
@@ -31,15 +40,29 @@ const PomodoroTimer = ({duration}) => {
 
         if(time === 0) {
 
-            const newStage = (stage % 3) + 1;
+            if(!skipped) new Audio(doneSound).play();
 
-            changeStage(newStage); // THIS IS WRONG. WE DO NOT GO FROM SB to LB.
+            let newStage = 0;
+
+            if(stage === 1 && (cycleCount % 4 === 0)) {
+                newStage = 3;
+            } else if(stage === 1) {
+                newStage = 2;
+            } else if(stage === 2 || stage === 3) {
+                newStage = 1;
+            }
+
+            changeStage(newStage);
 
             if(newStage === 1) setCycleCount(prevCount => prevCount + 1);
 
         }
 
-    }, [time])
+        setSkipped(false);
+
+
+
+    }, [time, stage, cycleCount, skipped])
 
     const getFormattedTime = () => {
 
@@ -49,7 +72,11 @@ const PomodoroTimer = ({duration}) => {
         let seconds = parseInt(total_seconds % 60);
         let minutes = parseInt(total_minutes % 60);
 
-        return (seconds < 10) ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
+        let minutesDisplay = (minutes < 10) ? `0${minutes}` : `${minutes}`;
+
+        let secondsDisplay =  (seconds < 10) ? `0${seconds}` : `${seconds}`;
+
+        return minutesDisplay + ":" + secondsDisplay;
   
     }
 
@@ -71,11 +98,12 @@ const PomodoroTimer = ({duration}) => {
     
 
     return (
-        <div id="pomodoro-content" className="ncsu">
-            
-            <div id="functions-container" className="ncsu-light">
 
-                <div id="stages">
+        <div id="pomodoro-content" className="rc1">
+            
+            <div id="functions-container" className="rc2">
+
+                <div id="stages" >
                     <button id="pomodoro" className={stage === 1 ? "active" : ""} onClick={() => {
                         changeStage(1);
                     }}>Pomodoro</button>
@@ -92,9 +120,20 @@ const PomodoroTimer = ({duration}) => {
                 </div>
 
                 <div id="timer-actions">
-                    <button className="ncsu-light-font" id="pause" onClick={() => setPause(!paused)}>
+                    <button className="rc2 font bebas" id="pause" onClick={() => {
+                        setPause(!paused);
+                        new Audio(pauseSound).play();
+                    }}>
                         {!paused ? 'Pause' : 'Start'}
                     </button>
+                    <button 
+                        className={paused ? "collapse" : "rc2"}
+                        id="fast-forward" 
+                        onClick={() => {
+                            new Audio(forwardSound).play();
+                            setSkipped(true);
+                            setTime(0);
+                    }}><img alt="Fast Forward Button" src={fastForward}/></button>
                 </div>
 
             </div>

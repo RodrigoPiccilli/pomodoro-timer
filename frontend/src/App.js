@@ -4,14 +4,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import PomodoroTimer from "./components/PomodoroTimer.jsx"
 
+import Settings from "./components/Settings.jsx"
+
 const AppContent = () => {
 
     return (
-        <div className="app-container">
+        <div className="app-container be">
 
-            <header id="pomodoro-header" className="ncsu">
-                <h1>Pomodoro Timer</h1>
-                <button className="settings">Settings</button>
+            <header id="pomodoro-header" className="rc1">
+                <h1 className="bebas">Pomodoro Timer</h1>
+                {<Settings></Settings>}
             </header>
 
             <Routes> 
