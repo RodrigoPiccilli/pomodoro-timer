@@ -150,8 +150,20 @@ body {
 
 .settings:hover {
   background: white;
-  color: var(--rc1);
   transform: translateY(-50%) rotate(90deg); 
+  
+}
+
+.settings:hover.rc {
+        color:var(--rc1);
+}
+
+.settings:hover.bc {
+    color:var(--bc1);
+}
+
+.settings:hover.oc {
+    color:var(--oc1);
 }
 
 
@@ -198,9 +210,6 @@ body {
     }
 }
 
-#pomodoro {
-    background-color: var(--rc1);
-}
 
 #timer-display p{
     margin: 10% 0;
@@ -238,9 +247,12 @@ body {
     right: 15%;
     height: 100%;
 
-    img {
-        width: 50px;
-    }
+}  
+
+#fast-forward-icon {
+    width: 50px;
+    font-size: 1.5rem;
+    background-color: transparent;
 }
 
 #pause:hover, #fast-forward:hover {
@@ -357,9 +369,20 @@ body {
 
     margin-bottom: 10%;
 
-    input {
-        border: 2px solid var(--rc1);
+    input.rc {
+        border: 2px solid var(--rc1);        
     }
+
+    input.oc {
+        border: 2px solid var(--oc1);        
+    }
+    
+
+    input.bc {
+        border: 2px solid var(--bc1);        
+    }
+    
+    
 
 }
 
@@ -370,6 +393,7 @@ body {
 
     input {
         font-size: 1.5rem;
+        border-radius: 5px;
     }
 
 }
@@ -380,12 +404,29 @@ body {
     align-items: center;
     text-wrap: nowrap;
 
-    justify-content: flex-start;
+    justify-content: space-around;
 
-    gap: 5%;
+    width: 100%;
 
+    margin-bottom: 10%;
+    
     input {
-        border: 2px solid var(--rc1);
+        width: 5vw;
+        font-size: 1.2rem;
+        border-radius: 5px;
+    }
+
+    input.rc {
+        border: 2px solid var(--rc1);        
+    }
+
+    input.oc {
+        border: 2px solid var(--oc1);        
+    }
+    
+
+    input.bc {
+        border: 2px solid var(--bc1);        
     }
 
 }
@@ -393,21 +434,14 @@ body {
 #exit-settings {
 
     padding: 3% 7% 3% 7%;
-
-    margin-top: 10%;
-
     margin-bottom: 5%;
-
     font-size: 1.5rem;
-
     transition: 0.1s;
     border-radius: 5%;
     box-shadow: 0px 2px 0px 3px lightgray;
-    border:none;
+    border: none;
     cursor: pointer;
-
     color: white;
-
 
 }
 
@@ -418,6 +452,42 @@ body {
 #exit-settings:active {
     transform: translateY(10%);
     box-shadow: 0px 0px 0px 0px black;
+}
+
+.section-title {
+    width: 100%;
+    margin: 0;
+    margin-left: 3vw;
+    color: rgb(152, 149, 149);
+    text-decoration: underline;
+}
+
+#color-themes {
+
+    margin-top: 5%;
+
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+    select {
+        background-color: white;
+        width: 5vw;
+        font-size: 1.2rem;
+        border-radius: 5px;
+    }
+
+    select.rc {
+        border: 2px solid var(--rc1);        
+    }
+
+    select.oc {
+        border: 2px solid var(--oc1);        
+    }
+    
+    select.bc {
+        border: 2px solid var(--bc1);        
+    }
 }
 
 

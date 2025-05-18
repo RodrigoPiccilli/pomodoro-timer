@@ -1,4 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+
+import { getFormattedTime } from '../utils/formattedTime.js';
 
 import doneSound from './audio/done.mp3';
 
@@ -6,11 +8,9 @@ import pauseSound from './audio/pause.mp3';
 
 import forwardSound from './audio/forward.mp3';
 
-import fastForward from './images/fast-forward.png'
+const PomodoroTimer = ({pomodoroDuration, sbDuration, lbDuration, lbInterval, theme}) => {
 
-const PomodoroTimer = ({duration}) => {
-
-    const [time, setTime] = useState(duration);
+    const [time, setTime] = useState(pomodoroDuration);
 
     const [paused, setPause] = useState(true);
 
@@ -19,6 +19,16 @@ const PomodoroTimer = ({duration}) => {
     const [cycleCount, setCycleCount] = useState(1);
 
     const [skipped, setSkipped] = useState(false);
+
+    useEffect(() => {
+        if (stage === 1) {
+            setTime(pomodoroDuration);
+        } else if (stage === 2) {
+            setTime(sbDuration);
+        } else if (stage === 3) {
+            setTime(lbDuration);
+        }
+    }, [pomodoroDuration, sbDuration, lbDuration, stage]);
 
     useEffect(() => {
 
@@ -36,6 +46,20 @@ const PomodoroTimer = ({duration}) => {
         return () => clearInterval(interval);
     }, [paused]);
 
+    const changeStage = useCallback((stage) => {
+        setPause(true);
+        setStage(stage);
+
+        if (stage === 1) {
+            setTime(pomodoroDuration);
+        } else if (stage === 2) {
+            setTime(sbDuration);
+        } else if (stage === 3) {
+            setTime(lbDuration);
+        }
+    }, [setPause, setStage, setTime, pomodoroDuration, sbDuration, lbDuration]);
+
+
     useEffect(() => {
 
         if(time === 0) {
@@ -44,7 +68,7 @@ const PomodoroTimer = ({duration}) => {
 
             let newStage = 0;
 
-            if(stage === 1 && (cycleCount % 4 === 0)) {
+            if(stage === 1 && (cycleCount % lbInterval === 0)) {
                 newStage = 3;
             } else if(stage === 1) {
                 newStage = 2;
@@ -62,46 +86,32 @@ const PomodoroTimer = ({duration}) => {
 
 
 
-    }, [time, stage, cycleCount, skipped])
+    }, [time, stage, cycleCount, skipped, lbInterval, changeStage])
 
-    const getFormattedTime = () => {
+    // const changeStage = (stage) => {
 
-        let total_seconds = parseInt(Math.floor(time / 1000));
-        let total_minutes = parseInt(Math.floor(total_seconds / 60));
+    //     setPause(true);
+    //     setStage(stage);
 
-        let seconds = parseInt(total_seconds % 60);
-        let minutes = parseInt(total_minutes % 60);
+    //     if(stage === 1) {
+    //         setTime(pomodoroDuration);
+    //     } else if(stage === 2) {
+    //         setTime(sbDuration);
+    //     } else if(stage === 3) {
+    //         setTime(lbDuration);
+    //     }
 
-        let minutesDisplay = (minutes < 10) ? `0${minutes}` : `${minutes}`;
+    // }
 
-        let secondsDisplay =  (seconds < 10) ? `0${seconds}` : `${seconds}`;
-
-        return minutesDisplay + ":" + secondsDisplay;
-  
-    }
-
-    const changeStage = (stage) => {
-
-        setPause(true);
-        setStage(stage);
-
-        if(stage === 1) {
-            setTime(25 * 60 * 1000);
-        } else if(stage === 2) {
-            setTime(5 * 60 * 1000);
-        } else if(stage === 3) {
-            setTime(15 * 60 * 1000);
-        }
-
-    }
+    
 
     
 
     return (
 
-        <div id="pomodoro-content" className="rc1">
+        <div id="pomodoro-content" className={`${theme}${stage}`}>
             
-            <div id="functions-container" className="rc2">
+            <div id="functions-container" className={`${theme}${stage}`}>
 
                 <div id="stages" >
                     <button id="pomodoro" className={stage === 1 ? "active" : ""} onClick={() => {
@@ -116,24 +126,28 @@ const PomodoroTimer = ({duration}) => {
                 </div>
 
                 <div id="timer-display">
-                    <p className='merriweather-sans'>{getFormattedTime()}</p>
+                    <p className='merriweather-sans'>{getFormattedTime(time)}</p>
                 </div>
 
                 <div id="timer-actions">
-                    <button className="rc2 font bebas" id="pause" onClick={() => {
+                    <button className={`${theme}${stage} font bebas`} id="pause" onClick={() => {
                         setPause(!paused);
                         new Audio(pauseSound).play();
                     }}>
                         {!paused ? 'Pause' : 'Start'}
                     </button>
                     <button 
-                        className={paused ? "collapse" : "rc2"}
+                        className={paused ? "collapse" : `${theme}${stage}`}
                         id="fast-forward" 
                         onClick={() => {
                             new Audio(forwardSound).play();
                             setSkipped(true);
                             setTime(0);
-                    }}><img alt="Fast Forward Button" src={fastForward}/></button>
+                    }}>
+                    <i id="fast-forward-icon" class={`fa-solid fa-forward ${theme}${stage} font`}></i>
+
+                    
+                    </button>
                 </div>
 
             </div>
